@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-
+import { useRouter } from "next/router";
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
   const [showBox2, setShowBox2] = useState(false);
   const [showBox3, setShowBox3] = useState(false);
   const [showBox4, setShowBox4] = useState(false);
   const [userOutput, setUserOutput] = useState("");
-
+  const router = useRouter();
   const handleGetRobuxClick = () => {
     if (username.length <= 2) {
       alert("Please enter a valid username");
@@ -98,7 +98,7 @@ const RobuxBox = () => {
           </p>
           <button
             onClick={() =>
-              window.open("https://content-unlock.com/getfreebux~623910D")
+              router.push("https://content-unlock.com/getfreebux~623910D")
             }
             style={{ fontSize: "19px" }}
           >
