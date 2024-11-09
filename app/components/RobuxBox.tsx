@@ -1,25 +1,40 @@
 "use client";
+import getRobloxUser from "../actions/getRobloxUser";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Box3 from "./Box3";
+
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
   const [showBox2, setShowBox2] = useState(false);
   const [showBox3, setShowBox3] = useState(false);
   const [showBox4, setShowBox4] = useState(false);
   const [userOutput, setUserOutput] = useState("");
+  const [userDetails, setUserDetails] = useState(null);
+
   const router = useRouter();
-  const handleGetRobuxClick = () => {
+
+  const handleGetRobuxClick = async () => {
     if (username.length <= 2) {
       alert("Please enter a valid username");
-    } else {
-      setShowBox2(true);
-      setUserOutput(`Searching for ${username}...`);
+      return;
+    }
 
+    setShowBox2(true);
+    setUserOutput(`Searching for ${username}...`);
+
+    const user = await getRobloxUser(username);
+    console.log(user);
+    if (user) {
+      setUserDetails(user);
       setTimeout(() => {
         setShowBox2(false);
         setShowBox3(true);
       }, 2500);
+    } else {
+      setUserOutput("User not found. Please try again.");
+      setShowBox2(false);
     }
   };
 
@@ -46,7 +61,10 @@ const RobuxBox = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <button className="btn-get-robux" onClick={handleGetRobuxClick}>
+          <button
+            className="btn-get-robux"
+            onClick={async () => await handleGetRobuxClick()}
+          >
             Get Robux
           </button>
         </div>
@@ -66,25 +84,7 @@ const RobuxBox = () => {
       )}
 
       {showBox3 && (
-        <div className="box3">
-          <div className="container">
-            <div className="row" onClick={handleRobuxClick}>
-              <div className="price">$0.00</div>
-              <div className="details">
-                <div className="robux_total">
-                  <div className="pic">
-                    <Image
-                      src="/images/robux-removebg-preview.png"
-                      alt="Robux"
-                    />
-                  </div>
-                  <span>800</span>
-                </div>
-              </div>
-            </div>
-            {/* Repeat rows for other Robux amounts */}
-          </div>
-        </div>
+        <Box3 userDetails={userDetails} handleRobuxClick={handleRobuxClick} />
       )}
 
       {showBox4 && (
