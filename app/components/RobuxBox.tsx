@@ -11,7 +11,6 @@ const RobuxBox = () => {
   const [showBox3, setShowBox3] = useState(false);
   const [showBox4, setShowBox4] = useState(false);
   const [userOutput, setUserOutput] = useState("");
-  const [userDetails, setUserDetails] = useState(null);
 
   const router = useRouter();
 
@@ -27,7 +26,6 @@ const RobuxBox = () => {
     const user = await getRobloxUser(username);
     console.log(user);
     if (user) {
-      setUserDetails(user);
       setTimeout(() => {
         setShowBox2(false);
         setShowBox3(true);
@@ -83,9 +81,7 @@ const RobuxBox = () => {
         </div>
       )}
 
-      {showBox3 && (
-        <Box3 userDetails={userDetails} handleRobuxClick={handleRobuxClick} />
-      )}
+      {showBox3 && <Box3 handleRobuxClick={handleRobuxClick} />}
 
       {showBox4 && (
         <div className="box4">
