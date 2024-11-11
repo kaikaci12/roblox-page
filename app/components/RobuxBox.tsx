@@ -1,17 +1,18 @@
 "use client";
-import getRobloxUser from "../actions/getRobloxUser";
+
 import { useState } from "react";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Box3 from "./Box3";
+import robuxPackages from "../../robuxPackages.json";
+import additionalPackages from "../../additionalPackages.json";
 
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
-  const [showBox2, setShowBox2] = useState(false);
-  const [showBox3, setShowBox3] = useState(false);
-  const [showBox4, setShowBox4] = useState(false);
+  const [currentStep, setCurrentStep] = useState<
+    "input" | "loading" | "box3" | "final"
+  >("input");
   const [userOutput, setUserOutput] = useState("");
-
   const router = useRouter();
 
   const handleGetRobuxClick = async () => {
@@ -20,36 +21,43 @@ const RobuxBox = () => {
       return;
     }
 
-    setShowBox2(true);
+    setCurrentStep("loading");
     setUserOutput(`Searching for ${username}...`);
+    setTimeout(() => {
+      setCurrentStep("box3");
+    }, 2500);
 
-    const user = await getRobloxUser(username);
-    console.log(user);
-    if (user) {
-      setTimeout(() => {
-        setShowBox2(false);
-        setShowBox3(true);
-      }, 2500);
-    } else {
-      setUserOutput("User not found. Please try again.");
-      setShowBox2(false);
-    }
+    // API call can be added here
+    // Example:
+    // try {
+    //   const response = await axios.post("/api/getUser", { username });
+    //   if (response.data) {
+    //     setUserOutput("User found! Proceeding to Robux purchase...");
+    //     setTimeout(() => {
+    //       setCurrentStep("box3");
+    //     }, 2500);
+    //   } else {
+    //     setUserOutput("User not found. Please try again.");
+    //     setCurrentStep("input");
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   setUserOutput("Error fetching user data. Please try again.");
+    //   setCurrentStep("input");
+    // }
   };
 
   const handleRobuxClick = () => {
-    setShowBox3(false);
-    setShowBox2(true);
+    setCurrentStep("loading");
     setUserOutput(`Sending Robux to ${username}...`);
-
     setTimeout(() => {
-      setShowBox2(false);
-      setShowBox4(true);
+      setCurrentStep("final");
     }, 2500);
   };
 
   return (
     <div className="box_con">
-      {!showBox2 && !showBox3 && !showBox4 && (
+      {currentStep === "input" && (
         <div className="box">
           <h3>Roblox Username</h3>
           <input
@@ -59,16 +67,13 @@ const RobuxBox = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <button
-            className="btn-get-robux"
-            onClick={async () => await handleGetRobuxClick()}
-          >
+          <button className="btn-get-robux" onClick={handleGetRobuxClick}>
             Get Robux
           </button>
         </div>
       )}
 
-      {showBox2 && (
+      {currentStep === "loading" && (
         <div className="box2">
           <div className="folding">
             <div className="sk-cube sk-cube1"></div>
@@ -81,9 +86,22 @@ const RobuxBox = () => {
         </div>
       )}
 
-      {showBox3 && <Box3 handleRobuxClick={handleRobuxClick} />}
+      {currentStep === "box3" && (
+        <Box3
+          additionalPackages={additionalPackages}
+          robuxPackages={robuxPackages}
+          bonusItem={{
+            name: "Sinister G.",
+            image: "/images/pumpkin-animation.gif",
+            description:
+              "One bonus item per account. Refunds result in losing the item.",
+            limitedTime: true,
+          }}
+          handleRobuxClick={handleRobuxClick}
+        />
+      )}
 
-      {showBox4 && (
+      {currentStep === "final" && (
         <div className="box4">
           <h3>Final Step!</h3>
           <p>

@@ -1,11 +1,11 @@
 import Middle from "./components/Middle";
-import GetRobux from "./components/GetRobux";
+import RobuxBox from "./components/RobuxBox";
 
 export default async function Home() {
   return (
     <div className="home-container">
       <Middle />
-      <GetRobux />
+      <RobuxBox />
     </div>
   );
 }
