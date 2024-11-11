@@ -1,7 +1,7 @@
 "use client";
 import getRobloxUser from "../actions/getRobloxUser";
 import { useState } from "react";
-import Image from "next/image";
+
 import { useRouter } from "next/router";
 import Box3 from "./Box3";
 
