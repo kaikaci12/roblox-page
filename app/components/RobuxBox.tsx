@@ -58,18 +58,20 @@ const RobuxBox = () => {
   return (
     <div className="box_con">
       {currentStep === "input" && (
-        <div className="box">
+        <div className="flex flex-col justify-center">
           <h3>Roblox Username</h3>
-          <input
-            type="text"
-            className="input-username"
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <button className="btn-get-robux" onClick={handleGetRobuxClick}>
-            Get Robux
-          </button>
+          <div className="flex items-center gap-4">
+            <input
+              type="text"
+              className="input-username"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <button className="" onClick={handleGetRobuxClick}>
+              Get Robux
+            </button>
+          </div>
         </div>
       )}
 
