@@ -3,7 +3,7 @@ import RobuxBox from "./components/RobuxBox";
 
 export default async function Home() {
   return (
-    <div className="home-container">
+    <div className="home-container ">
       <Middle />
       <RobuxBox />
     </div>
