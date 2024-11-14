@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import NavBar from "./components/NavBar";
 import "./globals.css";
+import Head from "next/head"; // Import Head from next/head
 
 export const metadata: Metadata = {
   title: "viprbx",
@@ -19,6 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* Add Google AdSense Script in Head */}
+        <Head>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
+            crossOrigin="anonymous"
+          ></script>
+        </Head>
+
         <NavBar />
         {children}
       </body>

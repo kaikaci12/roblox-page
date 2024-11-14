@@ -1,12 +1,20 @@
-// import axios from "axios";
-// const getRobloxUser = async (username) => {
-//   try {
-//     const response = await axios.get(`/api/getRobloxUser?username=${username}`);
-//     console.log("Response from server:", response.data); // Log the entire response
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching user:", error);
-//     return null;
-//   }
-// };
-// export default getRobloxUser;
+const fetchRobloxUser = async (username: string) => {
+  try {
+    const response = await fetch(`/api/getRobloxUser?username=${username}`);
+    const data = await response.json();
+
+    if (data && !data.error) {
+      if (!data.avatarUrl) {
+        data.avatarUrl = null;
+      }
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("robloxUser", JSON.stringify(data));
+      }
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+export default fetchRobloxUser;

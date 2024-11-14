@@ -1,11 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaBars, FaTimes } from "react-icons/fa"; // Import the close icon from react-icons
+import { FaBars, FaTimes } from "react-icons/fa";
+
+// Define the User type based on the session storage object shape
+interface User {
+  avatarUrl: string;
+  displayName: string;
+  username: string;
+  profilePictureUrl: string;
+}
 
 const NavBar = () => {
+  const [user, setUser] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("robloxUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,7 +34,6 @@ const NavBar = () => {
   return (
     <nav className="bg-[#dee1e3] fixed top-0 left-0 right-0 p-1 sm:p-0 z-50 shadow-md">
       <div className="flex items-center justify-between">
-        {/* Left Section: Hamburger Menu & Logo */}
         <div className="flex items-center space-x-4">
           <FaBars
             onClick={handleMenuToggle}
@@ -91,6 +106,24 @@ const NavBar = () => {
           ))}
         </div>
       </div>
+
+      {user && (
+        <div className="relative flex gap-2 items-center px-3">
+          <Image
+            src={user.profilePictureUrl}
+            alt={`${user.displayName}'s Avatar`}
+            className="rounded-full "
+            width={25}
+            height={25}
+          />
+
+          <div className="text-center ">
+            <span className="block text-sm font-semibold text-gray-900">
+              {user.displayName || "Display name not available"}
+            </span>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

@@ -422,3 +422,44 @@ h3 {
     transform: scale(1.05);
   }
 }
+.confirmation-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.user-details h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.confirmation-buttons button {
+  margin-top: 10px;
+}
+
+.btn-confirm {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.btn-cancel {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
