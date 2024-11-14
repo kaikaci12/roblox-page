@@ -21,15 +21,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        ></script>
+      </head>
       <body>
-        <Head>
-          <AdSense pId="ca-pub-5356953527878151" />
-          <meta
-            name="google-adsense-account"
-            content="ca-pub-5356953527878151"
-          />
-        </Head>
-
         <NavBar />
         {children}
       </body>
