@@ -62,6 +62,7 @@ const RobuxBox = () => {
   const handleConfirm = () => {
     if (user) {
       sessionStorage.setItem("robloxUser", JSON.stringify(user));
+      router.refresh();
     }
 
     setCurrentStep("box3");
@@ -69,6 +70,7 @@ const RobuxBox = () => {
 
   const handleCancel = () => {
     sessionStorage.removeItem("robloxUser");
+    router.refresh();
     setCurrentStep("input");
     setUsername("");
     setUser(null);

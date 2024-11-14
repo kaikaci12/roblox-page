@@ -7,9 +7,6 @@ const fetchRobloxUser = async (username: string) => {
       if (!data.avatarUrl) {
         data.avatarUrl = null;
       }
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("robloxUser", JSON.stringify(data));
-      }
     }
 
     return data;
