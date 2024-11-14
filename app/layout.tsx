@@ -1,9 +1,7 @@
-// RootLayout.tsx
 import type { Metadata } from "next";
 import NavBar from "./components/NavBar";
 import "./globals.css";
 import Head from "next/head";
-import AdSense from "./components/AdSense";
 
 export const metadata: Metadata = {
   title: "viprbx",
@@ -21,14 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <Head>
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
         ></script>
-      </head>
+        <meta name="google-adsense-account" content="ca-pub-5356953527878151" />
+      </Head>
       <body>
         <NavBar />
         {children}
