@@ -64,6 +64,7 @@ const RobuxBox = () => {
       sessionStorage.setItem("robloxUser", JSON.stringify(user));
       setCurrentStep("box3");
       router.refresh();
+      window.location.reload();
     }
   };
 
