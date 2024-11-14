@@ -1,3 +1,4 @@
+// RootLayout.tsx
 import type { Metadata } from "next";
 import NavBar from "./components/NavBar";
 import "./globals.css";
@@ -23,6 +24,10 @@ export default function RootLayout({
       <body>
         <Head>
           <AdSense pId="5356953527878151" />
+          <meta
+            name="google-adsense-account"
+            content="ca-pub-5356953527878151"
+          />
         </Head>
 
         <NavBar />

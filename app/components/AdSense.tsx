@@ -1,8 +1,11 @@
+// components/AdSense.tsx
 import Script from "next/script";
 import React from "react";
+
 interface AdSenseProps {
   pId: string;
 }
+
 function AdSense({ pId }: AdSenseProps) {
   return (
     <Script
