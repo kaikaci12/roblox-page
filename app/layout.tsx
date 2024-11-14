@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import NavBar from "./components/NavBar";
 import "./globals.css";
-import Head from "next/head"; // Import Head from next/head
+import Head from "next/head";
+import AdSense from "./components/AdSense";
 
 export const metadata: Metadata = {
   title: "viprbx",
@@ -21,16 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Head>
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
-            crossOrigin="anonymous"
-          ></script>
-
-          <meta
-            name="google-adsense-account"
-            content="ca-pub-5356953527878151"
-          />
+          <AdSense pId="5356953527878151" />
         </Head>
 
         <NavBar />
