@@ -80,10 +80,10 @@ const Box3: React.FC<Box3Props> = ({
       {/* Main Content */}
       <div className="flex flex-col sm:flex-row shadow-lg rounded-lg bg-white">
         {/* Bonus Item Info */}
-        <div className="flex flex-col items-center py-6 sm:w-1/3 border-b sm:border-b-0 sm:border-r">
+        <div className="flex flex-col items-center py-6 sm:w-1/4 border-b sm:border-b-0 sm:border-r">
           <Image
-            width={96}
-            height={96}
+            width={70}
+            height={70}
             src={bonusItem.image}
             alt={bonusItem.name}
             className="mb-4"
@@ -93,12 +93,14 @@ const Box3: React.FC<Box3Props> = ({
               Limited Time Only!
             </span>
           )}
-          <h3 className="text-xl font-semibold text-gray-800">
-            {bonusItem.name}
-          </h3>
-          <p className="text-gray-600 text-sm mt-2 text-center">
-            {bonusItem.description}
-          </p>
+          <div className="flex flex-col items-start justify-center w-full">
+            <h3 className="text-xl text-center font-semibold text-gray-800">
+              {bonusItem.name}
+            </h3>
+            <p className="text-gray-600 text-sm mt-2 text-center">
+              {bonusItem.description}
+            </p>
+          </div>
         </div>
 
         {/* Robux Package Options */}
