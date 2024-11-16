@@ -64,8 +64,8 @@ const RobuxBox = () => {
       sessionStorage.setItem("robloxUser", JSON.stringify(user));
       setCurrentStep("box3");
       router.refresh();
-      window.location.reload();
     }
+    window.location.reload();
   };
 
   const handleCancel = () => {
@@ -133,8 +133,9 @@ const RobuxBox = () => {
           additionalPackages={additionalPackages}
           robuxPackages={robuxPackages}
           bonusItem={{
-            name: "Sinister G.",
-            image: "/images/pumpkin-animation.gif",
+            name: "Clockwork's Golden Shades",
+            image:
+              "/images/e653327db6d30c02b563cd843ddd18dac0e9a6b80d5baddb392d23c9841f62ff-clockworks_golden_shades.gif",
             description:
               "One bonus item per account. Refunds result in losing the item.",
             limitedTime: true,
