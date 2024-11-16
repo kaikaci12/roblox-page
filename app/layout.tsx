@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import NavBar from "./components/NavBar";
+import Script from "next/script";
 import "./globals.css";
-import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "viprbx",
@@ -19,15 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <script
-          async
-          crossOrigin="anonymous"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
-        ></script>
-        <meta name="google-adsense-account" content="ca-pub-5356953527878151" />
-      </Head>
       <body>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8766062496141833"
+          crossOrigin="anonymous"
+        />
         <NavBar />
         {children}
       </body>
