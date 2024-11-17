@@ -22,7 +22,7 @@ export default function RootLayout({
       <body>
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8766062496141833"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5356953527878151"
           crossOrigin="anonymous"
         />
         <NavBar />

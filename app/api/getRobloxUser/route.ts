@@ -24,19 +24,16 @@ export async function GET(request: Request) {
 
     const userId = user.id;
 
-    // Fetch user details for the display name
     const userDetailsResponse = await axios.get(
       `https://users.roblox.com/v1/users/${userId}`
     );
     const displayName = userDetailsResponse.data.displayName;
 
-    // Fetch avatar image
     const avatarResponse = await axios.get(
       `https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=720x720&format=png&isCircular=false`
     );
     const avatarUrl = avatarResponse.data.data[0]?.imageUrl;
 
-    // Fetch profile picture (headshot)
     const profilePictureResponse = await axios.get(
       `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=720x720&format=png&isCircular=false`
     );

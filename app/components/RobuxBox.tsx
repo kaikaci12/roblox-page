@@ -30,24 +30,19 @@ const RobuxBox = () => {
 
     try {
       const fetchedUser = await fetchRobloxUser(username);
-      if (fetchedUser) {
-        setUser(fetchedUser);
-        setUserNotFound(false);
-        setTimeout(() => {
-          setCurrentStep("confirmation");
-        }, 2500);
-      } else {
+
+      if (!fetchedUser) {
         setUserNotFound(true);
-        setTimeout(() => {
-          setCurrentStep("input");
-        }, 2500);
+        setCurrentStep("input");
+        setUserOutput("An error occurred. Please try again later.");
       }
+      setUser(fetchedUser);
+      setUserNotFound(false);
+      setTimeout(() => {
+        setCurrentStep("confirmation");
+      }, 2500);
     } catch (error) {
       console.error("Error fetching user:", error);
-      setUserOutput("An error occurred. Please try again later.");
-      setTimeout(() => {
-        setCurrentStep("input");
-      }, 2500);
     }
   };
 
