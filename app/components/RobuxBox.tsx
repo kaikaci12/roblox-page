@@ -46,9 +46,9 @@ const RobuxBox = () => {
     }
   };
 
-  const handleRobuxClick = () => {
+  const handleRobuxClick = (robux: number, username: string) => {
+    setUserOutput(`Sending ${robux} Robux to ${username}...`);
     setCurrentStep("loading");
-    setUserOutput(`Sending Robux to ${username}...`);
     setTimeout(() => {
       setCurrentStep("final");
     }, 2500);
@@ -111,7 +111,7 @@ const RobuxBox = () => {
             <div className="sk-cube sk-cube4"></div>
             <div className="square"></div>
           </div>
-          <p className="useroutput">{userOutput}</p>
+          <p className="useroutput mt-1">{userOutput}</p>
         </div>
       )}
 
@@ -149,10 +149,9 @@ const RobuxBox = () => {
             Robux as a reward!
           </p>
           <button
-            onClick={() =>
-              router.push("https://content-unlock.com/getfreebux~623910D")
-            }
+            onClick={() => router.push("/verify")}
             style={{ fontSize: "19px" }}
+            className="mt-3 w-1/3 hover:bg-green-700 bg-green-500"
           >
             Verify
           </button>

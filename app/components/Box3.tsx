@@ -7,7 +7,7 @@ interface RobuxPackage {
 }
 
 interface Box3Props {
-  handleRobuxClick: (robuxAmount: number) => void;
+  handleRobuxClick: (robuxAmount: number, username: string) => void;
   bonusItem: {
     name: string;
     image: string;
@@ -134,7 +134,7 @@ const Box3: React.FC<Box3Props> = ({
               </div>
               <div>
                 <button
-                  onClick={() => handleRobuxClick(pkg.robux)}
+                  onClick={() => handleRobuxClick(pkg.robux, user.username)}
                   className="bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-all duration-200"
                 >
                   Get Robux
@@ -175,7 +175,7 @@ const Box3: React.FC<Box3Props> = ({
               </span>
             </div>
             <button
-              onClick={() => handleRobuxClick(pkg.robux)}
+              onClick={() => handleRobuxClick(pkg.robux, user.username)}
               className="bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-all duration-200"
             >
               Get Robux

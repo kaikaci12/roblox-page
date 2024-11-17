@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
       "t8.rbxcdn.com",
       "t9.rbxcdn.com",
       "t10.rbxcdn.com",
+      "cdn.affise.com",
+      "i.gyazo.com",
     ],
   },
 };
