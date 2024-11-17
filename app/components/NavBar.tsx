@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaBars, FaTimes } from "react-icons/fa";
-
-// Define the User type based on the session storage object shape
+import { useRouter } from "next/navigation";
 interface User {
   avatarUrl: string;
   displayName: string;
@@ -15,13 +14,14 @@ interface User {
 const NavBar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const storedUser = sessionStorage.getItem("robloxUser");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (!storedUser) {
+      router.push("/");
     }
-  }, []);
+    setUser(JSON.parse(storedUser));
+  }, [router]);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,8 +32,8 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-[#dee1e3] fixed top-0 left-0 right-0 p-1 sm:p-0 z-50 shadow-md">
-      <div className="flex items-center justify-between">
+    <nav className="bg-[#dee1e3] fixed top-0 left-0 right-0 p-1 sm:px-4 z-50 shadow-md">
+      <div className="flex items-center justify-between ">
         <div className="flex items-center space-x-4">
           <FaBars
             onClick={handleMenuToggle}
@@ -70,13 +70,11 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Sliding Sidebar for Mobile */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out z-50`}
       >
-        {/* Close Icon */}
         <div className="flex justify-end p-4">
           <FaTimes
             onClick={closeMenu}
@@ -84,7 +82,6 @@ const NavBar = () => {
           />
         </div>
 
-        {/* Sidebar Links */}
         <div className="flex flex-col mt-4 space-y-4">
           {[
             { href: "https://www.roblox.com/charts", label: "Charts" },
@@ -108,20 +105,31 @@ const NavBar = () => {
       </div>
 
       {user && (
-        <div className="relative flex gap-2 items-center px-3">
-          <Image
-            src={user.profilePictureUrl}
-            alt={`${user.displayName}'s Avatar`}
-            className="rounded-full "
-            width={25}
-            height={25}
-          />
+        <div className="flex gap-5">
+          <div className="relative flex gap-2 items-center px-3">
+            <Image
+              src={user.profilePictureUrl}
+              alt={`${user.displayName}'s Avatar`}
+              className="rounded-full "
+              width={25}
+              height={25}
+            />
 
-          <div className="text-center ">
-            <span className="block text-sm font-semibold text-gray-900">
-              {user.displayName || "Display name not available"}
-            </span>
+            <div className="text-center ">
+              <span className="block text-sm font-semibold text-gray-900">
+                {user.displayName || "Display name not available"}
+              </span>
+            </div>
           </div>
+          <button
+            className="   p-1 text-[13px] bg-rose-600  hover:bg-rose-400 "
+            onClick={() => {
+              sessionStorage.removeItem("robloxUser");
+              window.location.reload();
+            }}
+          >
+            Log out
+          </button>
         </div>
       )}
     </nav>
