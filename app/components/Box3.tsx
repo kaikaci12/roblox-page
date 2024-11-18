@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { FiChevronDown } from "react-icons/fi";
 
 interface RobuxPackage {
   price: string;
@@ -39,144 +40,140 @@ const Box3: React.FC<Box3Props> = ({
   };
 
   return (
-    <main className="p-6 max-w-6xl mx-auto space-y-6">
-      {/* Top Section with Bonus Info */}
-      <div className="relative text-lg sm:text-xl rounded-t-lg bg-gradient-to-r from-[#ffde67] to-[#f3b922] shadow-lg text-[#2e2e2e] p-6 text-center">
-        <h2 className="font-semibold text-xl text-gray-800">
-          Bonus virtual item included with a Robux purchase below
+    <main className=" space-y-10">
+      <div className="rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-md p-5 text-gray-800 text-center ">
+        <h2 className="font-semibold text-xl sm:text-2xl  flex items-center justify-center gap-3">
+          Bonus Virtual Item Included with a Robux Purchase
+          <FiChevronDown
+            width={25}
+            height={25}
+            className="text-gray-700 w-5 h-5 sm:w-10 sm:h-8 cursor-pointer"
+          />
         </h2>
-        <div className=" top-4 right-4 w-36 h-36 flex items-center justify-center mx-auto">
-          {user ? (
-            <div className="relative flex gap-2 items-center w-24 h-24">
+
+        {user && (
+          <div className="flex flex-col mt-2 items-center space-y-3">
+            <div className="relative w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white shadow-lg">
               <Image
                 src={user.profilePictureUrl}
                 alt={`${user.displayName}'s Avatar`}
-                className="rounded-full border-4 border-white shadow-lg"
-                width={96}
-                height={96}
+                className="object-cover w-full h-full"
+                width={112}
+                height={112}
+                priority
               />
-              <div className="absolute bottom-1 right-1 w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center border-[2px] border-white shadow-md">
-                <span className="text-xs font-bold text-white">PRO</span>
-              </div>
-              <div className="text-center mt-3">
-                <span className="block text-md font-semibold text-gray-900">
-                  {user.displayName || "Display name not available"}
-                </span>
-                <span className="text-sm text-gray-600">@{user.username}</span>
-              </div>
             </div>
-          ) : (
-            <p className="text-gray-500">Avatar not available</p>
-          )}
-        </div>
+
+            {/* User Info */}
+            <div>
+              <span className="block text-lg sm:text-xl font-medium text-gray-900">
+                {user.displayName || "No Display Name"}
+              </span>
+              <span className="text-sm text-gray-600">@{user.username}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className=" bg-red-600 text-white font-semibold text-sm px-6 py-2 rounded-full hover:bg-red-700 transition-all duration-200 shadow-md"
+          className="mt-4 bg-red-500 text-white font-medium text-sm sm:text-base px-5 py-2 rounded-lg hover:bg-red-600 transition shadow focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
         >
           Log Out
         </button>
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col sm:flex-row shadow-lg rounded-lg bg-white">
-        {/* Bonus Item Info */}
-        <div className="flex flex-col items-center py-6 sm:w-1/4 border-b sm:border-b-0 sm:border-r">
+      <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="flex flex-col items-center py-8 px-6 sm:w-1/3 border-b sm:border-b-0 sm:border-r bg-gray-50">
           <Image
-            width={70}
-            height={70}
+            width={100}
+            height={100}
             src={bonusItem.image}
             alt={bonusItem.name}
             className="mb-4"
           />
           {bonusItem.limitedTime && (
-            <span className="bg-yellow-400 text-black text-xs font-bold px-4 py-1 rounded-full mb-4">
+            <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full mb-4">
               Limited Time Only!
             </span>
           )}
-          <div className="flex flex-col items-start justify-center w-full">
-            <h3 className="text-xl text-center font-semibold text-gray-800">
-              {bonusItem.name}
-            </h3>
-            <p className="text-gray-600 text-sm mt-2 text-center">
-              {bonusItem.description}
-            </p>
-          </div>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
+            {bonusItem.name}
+          </h3>
+          <p className="text-gray-600 text-sm mt-2 text-center">
+            {bonusItem.description}
+          </p>
         </div>
 
-        {/* Robux Package Options */}
-        <div className="flex flex-col sm:w-2/3 py-4 px-6">
-          <div className="border-b flex justify-between items-center py-3">
-            <div className="font-bold text-gray-600 text-sm w-1/3">Price</div>
-            <div className="font-bold text-gray-600 text-sm w-1/3">
-              Robux Packages
-            </div>
+        <div className="flex flex-col sm:w-2/3 py-6 px-8">
+          <div className="border-b flex justify-between items-center py-3 text-base font-semibold text-gray-700">
+            <div className="w-1/3">Price</div>
+            <div className="w-1/3">Robux Packages</div>
             <div className="w-1/3"></div>
           </div>
           {robuxPackages.map((pkg, index) => (
             <div
               key={index}
-              className="border-b flex justify-between items-center py-4"
+              className="border-b flex justify-between items-center py-4 hover:bg-gray-50 transition"
             >
-              <div className="text-gray-800 font-medium text-sm">
-                {pkg.price}
+              <div className="text-gray-900 font-medium">{pkg.price}</div>
+              <div className="flex items-center p-2 justify-center w-[180px] bg-[#393b3d] rounded-md">
+                <div className="flex gap-1.5 items-center">
+                  <Image
+                    alt="Robux icon"
+                    width={100}
+                    height={100}
+                    src="/images/robux-white.png"
+                    className="w-6"
+                  />
+                  <span className="font-bold text-white sm:text-lg">
+                    {pkg.robux.toLocaleString()}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Image
-                  alt="Robux icon"
-                  width={24}
-                  height={24}
-                  src="/images/robux.png"
-                  className="mr-2"
-                />
-                <span className="text-gray-900 font-semibold text-sm">
-                  {pkg.robux.toLocaleString()}
-                </span>
-              </div>
-              <div>
-                <button
-                  onClick={() => handleRobuxClick(pkg.robux, user.username)}
-                  className="bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-all duration-200"
-                >
-                  Get Robux
-                </button>
-              </div>
+              <button
+                onClick={() => handleRobuxClick(pkg.robux, user.username)}
+                className="bg-green-500 text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Get Robux
+              </button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Additional Packages */}
-      <div className="bg-gray-50 rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-center mb-6 text-gray-700">
-          Same great value on other Robux packages
+      <div className="bg-gray-50 rounded-lg shadow p-8">
+        <h2 className="text-2xl font-semibold text-center mb-8 text-gray-700">
+          Same Great Value on Other Robux Packages
         </h2>
-        <div className="bg-gray-100 border-b flex justify-between py-2">
-          <div className="font-bold text-gray-600 text-sm w-1/3">Price</div>
-          <div className="font-bold text-gray-600 text-sm w-1/3">
-            Robux Packages
-          </div>
+        <div className="border-b flex justify-between items-center py-2 text-base font-bold text-gray-700 bg-gray-100">
+          <div className="w-1/3">Price</div>
+          <div className="w-1/3">Robux Packages</div>
+          <div className="w-1/3"></div>
         </div>
         {additionalPackages.map((pkg, index) => (
           <div
             key={index}
-            className="border-b hover:bg-gray-50 flex justify-between items-center py-4"
+            className="border-b flex justify-between items-center py-4 hover:bg-gray-50 transition"
           >
-            <div className="text-gray-800 font-medium text-sm">{pkg.price}</div>
-            <div className="flex items-center">
-              <Image
-                alt="Robux icon"
-                width={24}
-                height={24}
-                src="/images/robux.png"
-                className="mr-2"
-              />
-              <span className="text-gray-900 font-semibold text-sm">
-                {pkg.robux.toLocaleString()}
-              </span>
+            <div className="text-gray-900 font-medium">{pkg.price}</div>
+            <div className="flex items-center p-2 justify-center w-[180px] border border-gray-400 bg-transparent rounded-md">
+              <div className="flex gap-1.5 items-center">
+                <Image
+                  alt="Robux icon"
+                  width={100}
+                  height={100}
+                  src="/images/robux-gray.png"
+                  className="w-6"
+                />
+                <span className="font-bold text-gray-700 sm:text-lg">
+                  {pkg.robux.toLocaleString()}
+                </span>
+              </div>
             </div>
             <button
               onClick={() => handleRobuxClick(pkg.robux, user.username)}
-              className="bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-all duration-200"
+              className="bg-green-500 text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               Get Robux
             </button>

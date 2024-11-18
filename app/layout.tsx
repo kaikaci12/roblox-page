@@ -28,6 +28,9 @@ export default function RootLayout({
         />
         <NavBar />
         {children}
+        <footer className="fixed bottom-0 w-full  text-center p-3 bg-slate-300 rounded-md  font-bold text-gray-700 text-md">
+          @You have to complete all steps to receive Robux
+        </footer>
       </body>
     </html>
   );

@@ -463,3 +463,8 @@ h3 {
   padding: 10px 20px;
   border-radius: 5px;
 }
+.verify-header {
+  background-image: url("/images/bp.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}

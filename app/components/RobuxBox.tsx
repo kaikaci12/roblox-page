@@ -80,7 +80,7 @@ const RobuxBox = () => {
   }, [currentStep]);
 
   return (
-    <div className="box_con">
+    <div className="box_con rounded-md">
       {currentStep === "input" && (
         <div className="flex flex-col justify-center">
           <h3>Roblox Username</h3>
