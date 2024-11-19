@@ -84,7 +84,7 @@ const RobuxBox = () => {
       {currentStep === "input" && (
         <div className="flex flex-col justify-center">
           <h3>Roblox Username</h3>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col justify-start  sm:flex-row  gap-4">
             <input
               type="text"
               className="input-username"
@@ -92,7 +92,9 @@ const RobuxBox = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <button onClick={handleGetRobuxClick}>Get Robux</button>
+            <button onClick={handleGetRobuxClick} className="self-start">
+              Get Robux
+            </button>
             {userNotFound && (
               <div className="text-rose-600">
                 User not found. Please check the username and try again.

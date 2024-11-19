@@ -110,9 +110,9 @@ const NavBar = () => {
             <Image
               src={user.profilePictureUrl}
               alt={`${user.displayName}'s Avatar`}
-              className="rounded-full "
-              width={25}
-              height={25}
+              className="rounded-full w-10 h-10"
+              width={96}
+              height={96}
             />
 
             <div className="text-center ">

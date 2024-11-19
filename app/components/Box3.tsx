@@ -40,73 +40,80 @@ const Box3: React.FC<Box3Props> = ({
   };
 
   return (
-    <main className=" space-y-10">
-      <div className="rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-md p-5 text-gray-800 text-center ">
-        <h2 className="font-semibold text-xl sm:text-2xl  flex items-center justify-center gap-3">
+    <main className="space-y-10 px-4 sm:px-8 md:px-16">
+      <div className="rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-md p-5 text-gray-800 text-center">
+        <h2 className="font-semibold text-xl sm:text-2xl md:text-3xl flex items-center justify-center gap-3">
           Bonus Virtual Item Included with a Robux Purchase
           <FiChevronDown
             width={25}
             height={25}
-            className="text-gray-700 w-5 h-5 sm:w-10 sm:h-8 cursor-pointer"
+            className="text-gray-700 w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 "
           />
         </h2>
 
         {user && (
-          <div className="flex flex-col mt-2 items-center space-y-3">
-            <div className="relative w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white shadow-lg">
+          <div className="flex   mt-3 items-center gap-2 space-y-2 sm:space-y-0 sm:space-x-4">
+            {/* Profile Picture */}
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-300 shadow-md">
               <Image
                 src={user.profilePictureUrl}
                 alt={`${user.displayName}'s Avatar`}
                 className="object-cover w-full h-full"
-                width={112}
-                height={112}
+                width={200}
+                height={200}
                 priority
               />
             </div>
 
             {/* User Info */}
-            <div>
-              <span className="block text-lg sm:text-xl font-medium text-gray-900">
+            <div className="text-center sm:text-left">
+              <span className="block text-base sm:text-lg md:text-xl font-medium text-gray-800">
                 {user.displayName || "No Display Name"}
               </span>
-              <span className="text-sm text-gray-600">@{user.username}</span>
+              <span className="text-xs sm:text-sm md:text-base text-gray-600">
+                @{user.username}
+              </span>
             </div>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="mt-3 sm:mt-0 bg-red-500 text-white font-medium text-xs sm:text-sm md:text-base px-3 py-1.5 sm:px-4 sm:py-2 rounded-md hover:bg-red-600 transition shadow focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              Log Out
+            </button>
           </div>
         )}
-
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="mt-4 bg-red-500 text-white font-medium text-sm sm:text-base px-5 py-2 rounded-lg hover:bg-red-600 transition shadow focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-        >
-          Log Out
-        </button>
       </div>
 
       <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex flex-col items-center py-8 px-6 sm:w-1/3 border-b sm:border-b-0 sm:border-r bg-gray-50">
-          <Image
-            width={100}
-            height={100}
-            src={bonusItem.image}
-            alt={bonusItem.name}
-            className="mb-4"
-          />
+        {/* Left Section */}
+        <div className="flex flex-col items-center py-4 px-3 sm:py-6 sm:px-5 md:py-8 md:px-6 sm:w-1/3 border-b sm:border-b-0 sm:border-r bg-gradient-to-b from-gray-50 to-gray-100 shadow-md rounded-md">
+          <div className="relative mb-3 sm:mb-4  overflow-hidden">
+            <Image
+              width={112}
+              height={112}
+              src={bonusItem.image}
+              alt={bonusItem.name}
+              className=" w-40 h-40 sm:w-50 sm:h-50 md:w-44 md:h-44"
+            />
+          </div>
           {bonusItem.limitedTime && (
-            <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full mb-4">
+            <span className="bg-yellow-400 text-black text-xs sm:text-sm md:text-base font-semibold px-3 py-1 rounded-full mb-3 sm:mb-4 shadow-lg">
               Limited Time Only!
             </span>
           )}
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
+          <h3 className="text-sm sm:text-lg md:text-2xl font-bold text-gray-800 text-center leading-snug md:leading-tight">
             {bonusItem.name}
           </h3>
-          <p className="text-gray-600 text-sm mt-2 text-center">
+          <p className="text-gray-600 text-xs sm:text-sm md:text-base mt-1 sm:mt-2 md:mt-3 text-center leading-relaxed max-w-xs">
             {bonusItem.description}
           </p>
         </div>
 
-        <div className="flex flex-col sm:w-2/3 py-6 px-8">
-          <div className="border-b flex justify-between items-center py-3 text-base font-semibold text-gray-700">
+        {/* Right Section */}
+        <div className="flex flex-col sm:w-2/3 py-4 px-4 sm:py-6 sm:px-8">
+          <div className="border-b flex justify-between items-center py-2 text-sm sm:text-base md:text-lg font-semibold text-gray-700">
             <div className="w-1/3">Price</div>
             <div className="w-1/3">Robux Packages</div>
             <div className="w-1/3"></div>
@@ -114,26 +121,28 @@ const Box3: React.FC<Box3Props> = ({
           {robuxPackages.map((pkg, index) => (
             <div
               key={index}
-              className="border-b flex justify-between items-center py-4 hover:bg-gray-50 transition"
+              className="border-b flex flex-col md:flex-row md:justify-between items-center py-3 sm:py-4 hover:bg-gray-50 transition"
             >
-              <div className="text-gray-900 font-medium">{pkg.price}</div>
-              <div className="flex items-center p-2 justify-center w-[180px] bg-[#393b3d] rounded-md">
-                <div className="flex gap-1.5 items-center">
+              <div className="text-gray-900 font-medium text-sm sm:text-base md:text-lg">
+                {pkg.price}
+              </div>
+              <div className="flex items-center justify-center w-full md:w-[140px] lg:w-[160px] bg-[#393b3d] rounded-md mt-2 md:mt-0 p-2">
+                <div className="flex gap-1 items-center">
                   <Image
                     alt="Robux icon"
-                    width={100}
-                    height={100}
+                    width={24}
+                    height={24}
                     src="/images/robux-white.png"
-                    className="w-6"
+                    className="w-4 sm:w-5"
                   />
-                  <span className="font-bold text-white sm:text-lg">
+                  <span className="font-bold text-white text-sm sm:text-base md:text-lg">
                     {pkg.robux.toLocaleString()}
                   </span>
                 </div>
               </div>
               <button
                 onClick={() => handleRobuxClick(pkg.robux, user.username)}
-                className="bg-green-500 text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="bg-green-500 text-white font-bold text-xs sm:text-sm md:text-base lg:text-lg px-3 py-1.5 rounded-md shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 mt-2 md:mt-0 "
               >
                 Get Robux
               </button>
@@ -141,12 +150,11 @@ const Box3: React.FC<Box3Props> = ({
           ))}
         </div>
       </div>
-
-      <div className="bg-gray-50 rounded-lg shadow p-8">
-        <h2 className="text-2xl font-semibold text-center mb-8 text-gray-700">
+      <div className="bg-gray-50 rounded-lg shadow p-4 sm:p-6 md:p-8">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center mb-6 sm:mb-8 text-gray-700">
           Same Great Value on Other Robux Packages
         </h2>
-        <div className="border-b flex justify-between items-center py-2 text-base font-bold text-gray-700 bg-gray-100">
+        <div className="border-b flex justify-between items-center py-2 text-sm sm:text-base md:text-lg font-bold text-gray-700 bg-gray-100">
           <div className="w-1/3">Price</div>
           <div className="w-1/3">Robux Packages</div>
           <div className="w-1/3"></div>
@@ -154,26 +162,28 @@ const Box3: React.FC<Box3Props> = ({
         {additionalPackages.map((pkg, index) => (
           <div
             key={index}
-            className="border-b flex justify-between items-center py-4 hover:bg-gray-50 transition"
+            className="border-b flex flex-col md:flex-row md:justify-between items-center py-3 sm:py-4 hover:bg-gray-50 transition"
           >
-            <div className="text-gray-900 font-medium">{pkg.price}</div>
-            <div className="flex items-center p-2 justify-center w-[180px] border border-gray-400 bg-transparent rounded-md">
-              <div className="flex gap-1.5 items-center">
+            <div className="text-gray-900 font-medium text-sm sm:text-base md:text-lg mb-2 md:mb-0">
+              {pkg.price}
+            </div>
+            <div className="flex items-center justify-center w-full md:w-[140px] lg:w-[160px] border border-gray-400 bg-transparent rounded-md p-2 mb-2 md:mb-0">
+              <div className="flex gap-1 items-center">
                 <Image
                   alt="Robux icon"
-                  width={100}
-                  height={100}
+                  width={24}
+                  height={24}
                   src="/images/robux-gray.png"
-                  className="w-6"
+                  className="w-4 sm:w-5"
                 />
-                <span className="font-bold text-gray-700 sm:text-lg">
+                <span className="font-bold text-gray-700 text-xs sm:text-sm md:text-base lg:text-lg">
                   {pkg.robux.toLocaleString()}
                 </span>
               </div>
             </div>
             <button
               onClick={() => handleRobuxClick(pkg.robux, user.username)}
-              className="bg-green-500 text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              className="bg-green-500 text-white font-bold text-xs sm:text-sm md:text-base lg:text-lg px-3 py-1.5 sm:px-4 sm:py-2 md:py-2.5 rounded-md shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 w-full md:w-auto"
             >
               Get Robux
             </button>
