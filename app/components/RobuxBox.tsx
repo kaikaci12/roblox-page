@@ -25,7 +25,7 @@ const RobuxBox = () => {
         const fetchedUser = await fetchRobloxUser(username);
         if (fetchedUser) return fetchedUser;
       } catch (error) {
-        console.warn(`Retry ${i + 1} failed for ${username}`);
+        console.log(error);
       }
     }
     return null;
