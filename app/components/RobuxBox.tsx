@@ -18,8 +18,21 @@ const RobuxBox = () => {
   const [userOutput, setUserOutput] = useState<string>("");
   const router = useRouter();
 
+  // Retry wrapper for the API call
+  const fetchWithRetry = async (username: string, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const fetchedUser = await fetchRobloxUser(username);
+        if (fetchedUser) return fetchedUser;
+      } catch (error) {
+        console.warn(`Retry ${i + 1} failed for ${username}`);
+      }
+    }
+    return null;
+  };
+
   const handleGetRobuxClick = async () => {
-    if (username.length <= 2) {
+    if (username.trim().length <= 2) {
       alert("Please enter a valid username");
       return;
     }
@@ -29,19 +42,20 @@ const RobuxBox = () => {
     setUserNotFound(false);
 
     try {
-      const fetchedUser = await fetchRobloxUser(username);
+      const fetchedUser = await fetchWithRetry(username, 3);
       if (!fetchedUser) {
         setUserNotFound(true);
         setCurrentStep("input");
-        setUserOutput("Something went wrong. Please try again later.");
+        setUserOutput("User not found. Please try again later.");
+        return;
       }
+
       setUser(fetchedUser);
-      setUserNotFound(false);
-      setTimeout(() => {
-        setCurrentStep("confirmation");
-      }, 3000);
+      setCurrentStep("confirmation");
     } catch (error) {
       console.error("Error fetching user:", error);
+      setUserNotFound(true);
+      setUserOutput("Something went wrong. Please try again later.");
     }
   };
 
@@ -57,14 +71,11 @@ const RobuxBox = () => {
     if (user) {
       sessionStorage.setItem("robloxUser", JSON.stringify(user));
       setCurrentStep("box3");
-      router.refresh();
     }
-    window.location.reload();
   };
 
   const handleCancel = () => {
     sessionStorage.removeItem("robloxUser");
-    router.refresh();
     setCurrentStep("input");
     setUsername("");
     setUser(null);
@@ -73,7 +84,9 @@ const RobuxBox = () => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("robloxUser") && currentStep === "input") {
+    const savedUser = sessionStorage.getItem("robloxUser");
+    if (savedUser && currentStep === "input") {
+      setUser(JSON.parse(savedUser));
       setCurrentStep("box3");
     }
   }, [currentStep]);
@@ -83,7 +96,7 @@ const RobuxBox = () => {
       {currentStep === "input" && (
         <div className="flex flex-col justify-center">
           <h3>Roblox Username</h3>
-          <div className="flex flex-col justify-start  sm:flex-row  gap-4">
+          <div className="flex flex-col justify-start sm:flex-row gap-4">
             <input
               type="text"
               className="input-username"
