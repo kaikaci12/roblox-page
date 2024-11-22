@@ -58,6 +58,7 @@ function Verify() {
               src={ad.network_icon}
               alt={ad.name}
               className="w-20 h-20 object-cover"
+              unoptimized
             />
             <div className="flex flex-col items-center gap-2 mt-3">
               <h3 className="text-lg font-semibold text-center">{ad.name}</h3>

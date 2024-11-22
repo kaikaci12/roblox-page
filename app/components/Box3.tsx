@@ -56,26 +56,26 @@ const Box3: React.FC<Box3Props> = ({
             {/* Profile Picture */}
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border border-gray-300 shadow-md">
               <Image
-                src={user.profilePictureUrl}
+                src={
+                  user.profilePictureUrl || user.avatarUrl || "/images/noob.png"
+                }
                 alt={`${user.displayName}'s Avatar`}
                 className="object-cover w-full h-full"
                 width={200}
                 height={200}
-                priority
+                unoptimized
               />
             </div>
 
-            {/* User Info */}
-            <div className="text-center sm:text-left">
-              <span className="block text-base sm:text-lg md:text-xl font-medium text-gray-800">
-                {user.displayName || "No Display Name"}
-              </span>
-              <span className="text-xs sm:text-sm md:text-base text-gray-600">
-                @{user.username}
-              </span>
+            <div className="user-details flex flex-col items-center justify-center">
+              <h4 className="text-2xl font-bold text-gray-800 tracking-wide">
+                {user.displayName || "Displayname not available"}
+              </h4>
+              <p className="text-sm text-gray-600">
+                @{user.username || "roblox-user"}
+              </p>
             </div>
 
-            {/* Logout Button */}
             <button
               onClick={handleLogout}
               className="mt-3 sm:mt-0 bg-red-500 text-white font-medium text-xs sm:text-sm md:text-base px-3 py-1.5 sm:px-4 sm:py-2 rounded-md hover:bg-red-600 transition shadow focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"

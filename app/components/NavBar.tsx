@@ -46,6 +46,7 @@ const NavBar = () => {
               src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTExLjY3NiAwTDAgNDQuMTY2IDQzLjU3NyA1NmwxMS42NzYtNDQuMTY2TDExLjY3NiAwem0yMC40MDkgMzUuODI3bC0xMi4xNzctMy4zMDggMy4yNjQtMTIuMzQyIDEyLjE4MiAzLjMwOC0zLjI3IDEyLjM0MnoiIGZpbGw9IiMzOTNCM0QiLz48L3N2Zz4="
               alt="Logo"
               className="w-8 h-8 cursor-pointer"
+              unoptimized
             />
           </Link>
         </div>
@@ -108,7 +109,9 @@ const NavBar = () => {
         <div className="flex gap-5">
           <div className="relative flex gap-2 items-center px-3">
             <Image
-              src={user.profilePictureUrl}
+              src={
+                user.profilePictureUrl || user.avatarUrl || "/images/noob.png"
+              }
               alt={`${user.displayName}'s Avatar`}
               className="rounded-full w-10 h-10"
               width={96}

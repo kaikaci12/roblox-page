@@ -25,15 +25,13 @@ const Confirmation = ({ user, onConfirm, onCancel }: ConfirmationProps) => {
             <div className="relative w-36 h-36 ">
               <Image
                 src={
-                  user.avatarUrl ||
-                  "/images/avatar-default.png" ||
-                  user.profilePicture
+                  user.avatarUrl || "/images/noob.png" || user.profilePicture
                 }
                 alt={`${user.displayName}'s Avatar ` || "avatar"}
                 className="rounded-full shadow-md hover:shadow-lg transition-shadow duration-300"
                 width={144}
                 height={144}
-                priority
+                unoptimized
               />
             </div>
 
