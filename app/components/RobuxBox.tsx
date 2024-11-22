@@ -30,7 +30,6 @@ const RobuxBox = () => {
 
     try {
       const fetchedUser = await fetchRobloxUser(username);
-
       if (!fetchedUser) {
         setUserNotFound(true);
         setCurrentStep("input");
@@ -40,7 +39,7 @@ const RobuxBox = () => {
       setUserNotFound(false);
       setTimeout(() => {
         setCurrentStep("confirmation");
-      }, 2500);
+      }, 3000);
     } catch (error) {
       console.error("Error fetching user:", error);
     }

@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-// Initialize cache and rate limiter
+// Cache and rate limiter
 const cache = new Map();
 const rateLimiter = new Map();
 
-// Cache helpers
+const getClientIP = (request) => {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  return forwardedFor
+    ? forwardedFor.split(",")[0]
+    : request.headers.get("remote-address") || "127.0.0.1";
+};
+
 const getFromCache = (key) => {
   const entry = cache.get(key);
   return entry && entry.expiry > Date.now() ? entry.value : null;
@@ -15,7 +21,6 @@ const setCache = (key, value, ttl = 300) => {
   cache.set(key, { value, expiry: Date.now() + ttl * 1000 });
 };
 
-// Rate limiter
 const isRateLimited = (ip, maxRequests = 10, windowMs = 60000) => {
   const currentTime = Date.now();
   const requests = rateLimiter.get(ip) || [];
@@ -29,7 +34,7 @@ const isRateLimited = (ip, maxRequests = 10, windowMs = 60000) => {
 };
 
 export async function GET(request) {
-  const ip = request.headers.get("x-forwarded-for") || "127.0.0.1"; // Get user IP
+  const ip = getClientIP(request);
 
   if (isRateLimited(ip)) {
     return NextResponse.json(
@@ -54,7 +59,6 @@ export async function GET(request) {
   }
 
   try {
-    // Fetch user search details
     const searchResponse = await axios.get(
       `https://users.roblox.com/v1/users/search?keyword=${username}`
     );
