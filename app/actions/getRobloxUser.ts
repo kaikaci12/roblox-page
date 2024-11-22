@@ -8,15 +8,23 @@ const fetchRobloxUser = async (username: string) => {
 
     const data = await response.json();
 
+    // Check if the response contains an error or invalid data
     if (!data || data.error) {
+      console.error(
+        "Error fetching user data:",
+        data?.error || "Unknown error"
+      );
       return { error: data?.error || "Could not find user" };
     }
 
+    // If no error, return the user data
     return {
       ...data,
       avatarUrl: data.avatarUrl || null,
     };
   } catch (error) {
+    // Enhanced error handling to catch network or unexpected errors
+    console.error("Error while fetching Roblox user:", error);
     return {
       error:
         error instanceof Error ? error.message : "An unknown error occurred",

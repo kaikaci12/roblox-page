@@ -14,48 +14,36 @@ const RobuxBox = () => {
   const [currentStep, setCurrentStep] = useState<
     "input" | "loading" | "box3" | "final" | "confirmation"
   >("input");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // Improved type handling
   const [userOutput, setUserOutput] = useState<string>("");
   const router = useRouter();
 
-  // Retry wrapper for the API call
-  const fetchWithRetry = async (username: string, retries = 3) => {
-    for (let i = 0; i < retries; i++) {
-      try {
-        const fetchedUser = await fetchRobloxUser(username);
-        if (fetchedUser) return fetchedUser;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    return null;
-  };
-
   const handleGetRobuxClick = async () => {
-    if (username.trim().length <= 2) {
+    const trimmedUsername = username.trim();
+
+    if (trimmedUsername.length <= 2) {
       alert("Please enter a valid username");
       return;
     }
 
+    setUsername(trimmedUsername); // Update username state with trimmed value
     setCurrentStep("loading");
-    setUserOutput(`Searching for ${username}...`);
+    setUserOutput(`Searching for ${trimmedUsername}...`);
     setUserNotFound(false);
 
     try {
-      const fetchedUser = await fetchWithRetry(username, 3);
-      if (!fetchedUser) {
-        setUserNotFound(true);
-        setCurrentStep("input");
-        setUserOutput("User not found. Please try again later.");
-        return;
-      }
+      const fetchedUser = await fetchRobloxUser(trimmedUsername);
 
+      if (fetchedUser.error) {
+        setUser(null);
+        router.refresh();
+      }
       setUser(fetchedUser);
       setCurrentStep("confirmation");
     } catch (error) {
-      console.error("Error fetching user:", error);
       setUserNotFound(true);
       setUserOutput("Something went wrong. Please try again later.");
+      console.error("Error fetching user:", error);
     }
   };
 
@@ -71,16 +59,19 @@ const RobuxBox = () => {
     if (user) {
       sessionStorage.setItem("robloxUser", JSON.stringify(user));
       setCurrentStep("box3");
+      router.refresh();
     }
   };
 
   const handleCancel = () => {
-    sessionStorage.removeItem("robloxUser");
-    setCurrentStep("input");
-    setUsername("");
+    setTimeout(() => {
+      setUsername("");
+      setCurrentStep("input");
+    }, 4000);
+    setCurrentStep("loading");
     setUser(null);
-    setUserOutput("");
     setUserNotFound(false);
+    setUserOutput("");
   };
 
   useEffect(() => {
@@ -109,7 +100,8 @@ const RobuxBox = () => {
             </button>
             {userNotFound && (
               <div className="text-rose-600">
-                User not found. Please check the username and try again.
+                {userOutput ||
+                  "User not found. Please check the username and try again."}
               </div>
             )}
           </div>

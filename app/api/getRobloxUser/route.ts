@@ -1,48 +1,32 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-// Cache and rate limiter
-const cache = new Map();
-const rateLimiter = new Map();
+const MAX_RETRIES = 5;
+const INITIAL_DELAY = 2000; // 2 seconds initial delay
 
-const getClientIP = (request) => {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  return forwardedFor
-    ? forwardedFor.split(",")[0]
-    : request.headers.get("remote-address") || "127.0.0.1";
-};
+// Retry function with exponential backoff
+const fetchWithRetry = async (
+  url: string,
+  retries: number = MAX_RETRIES,
+  delay: number = INITIAL_DELAY
+) => {
+  try {
+    const response = await axios.get(url);
+    return response;
+  } catch (error) {
+    if (error.response && error.response.status === 429 && retries > 0) {
+      console.log(`Rate limit reached. Retrying in ${delay / 1000} seconds...`);
 
-const getFromCache = (key) => {
-  const entry = cache.get(key);
-  return entry && entry.expiry > Date.now() ? entry.value : null;
-};
+      await new Promise((resolve) => setTimeout(resolve, delay));
 
-const setCache = (key, value, ttl = 300) => {
-  cache.set(key, { value, expiry: Date.now() + ttl * 1000 });
-};
+      return fetchWithRetry(url, retries - 1, delay * 2);
+    }
 
-const isRateLimited = (ip, maxRequests = 10, windowMs = 60000) => {
-  const currentTime = Date.now();
-  const requests = rateLimiter.get(ip) || [];
-
-  const recentRequests = requests.filter(
-    (timestamp) => currentTime - timestamp < windowMs
-  );
-  rateLimiter.set(ip, [...recentRequests, currentTime]);
-
-  return recentRequests.length >= maxRequests;
+    throw error;
+  }
 };
 
 export async function GET(request) {
-  const ip = getClientIP(request);
-
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again later." },
-      { status: 429 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username");
 
@@ -53,13 +37,9 @@ export async function GET(request) {
     );
   }
 
-  const cachedResponse = getFromCache(username);
-  if (cachedResponse) {
-    return NextResponse.json(cachedResponse);
-  }
-
   try {
-    const searchResponse = await axios.get(
+    console.log(`Fetching data for username: ${username}`);
+    const searchResponse = await fetchWithRetry(
       `https://users.roblox.com/v1/users/search?keyword=${username}`
     );
 
@@ -87,8 +67,6 @@ export async function GET(request) {
       profilePictureUrl: profilePictureResponse.data.data[0]?.imageUrl || null,
       username,
     };
-
-    setCache(username, responseData);
 
     return NextResponse.json(responseData);
   } catch (error) {
