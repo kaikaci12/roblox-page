@@ -1,7 +1,43 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export async function GET(request: Request) {
+// Initialize cache and rate limiter
+const cache = new Map();
+const rateLimiter = new Map();
+
+// Cache helpers
+const getFromCache = (key) => {
+  const entry = cache.get(key);
+  return entry && entry.expiry > Date.now() ? entry.value : null;
+};
+
+const setCache = (key, value, ttl = 300) => {
+  cache.set(key, { value, expiry: Date.now() + ttl * 1000 });
+};
+
+// Rate limiter
+const isRateLimited = (ip, maxRequests = 10, windowMs = 60000) => {
+  const currentTime = Date.now();
+  const requests = rateLimiter.get(ip) || [];
+
+  const recentRequests = requests.filter(
+    (timestamp) => currentTime - timestamp < windowMs
+  );
+  rateLimiter.set(ip, [...recentRequests, currentTime]);
+
+  return recentRequests.length >= maxRequests;
+};
+
+export async function GET(request) {
+  const ip = request.headers.get("x-forwarded-for") || "127.0.0.1"; // Get user IP
+
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username");
 
@@ -12,7 +48,13 @@ export async function GET(request: Request) {
     );
   }
 
+  const cachedResponse = getFromCache(username);
+  if (cachedResponse) {
+    return NextResponse.json(cachedResponse);
+  }
+
   try {
+    // Fetch user search details
     const searchResponse = await axios.get(
       `https://users.roblox.com/v1/users/search?keyword=${username}`
     );
@@ -24,29 +66,29 @@ export async function GET(request: Request) {
 
     const userId = user.id;
 
-    const userDetailsResponse = await axios.get(
-      `https://users.roblox.com/v1/users/${userId}`
-    );
-    const displayName = userDetailsResponse.data.displayName;
+    const [userDetailsResponse, avatarResponse, profilePictureResponse] =
+      await Promise.all([
+        axios.get(`https://users.roblox.com/v1/users/${userId}`),
+        axios.get(
+          `https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=720x720&format=png&isCircular=false`
+        ),
+        axios.get(
+          `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=720x720&format=png&isCircular=false`
+        ),
+      ]);
 
-    const avatarResponse = await axios.get(
-      `https://thumbnails.roblox.com/v1/users/avatar?userIds=${userId}&size=720x720&format=png&isCircular=false`
-    );
-    const avatarUrl = avatarResponse.data.data[0]?.imageUrl;
-
-    const profilePictureResponse = await axios.get(
-      `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=720x720&format=png&isCircular=false`
-    );
-    const profilePictureUrl = profilePictureResponse.data.data[0]?.imageUrl;
-
-    return NextResponse.json({
-      displayName,
-      avatarUrl,
-      profilePictureUrl,
+    const responseData = {
+      displayName: userDetailsResponse.data.displayName,
+      avatarUrl: avatarResponse.data.data[0]?.imageUrl || null,
+      profilePictureUrl: profilePictureResponse.data.data[0]?.imageUrl || null,
       username,
-    });
+    };
+
+    setCache(username, responseData);
+
+    return NextResponse.json(responseData);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching Roblox user data:", error);
     return NextResponse.json(
       { error: "Error fetching user data" },
       { status: 500 }

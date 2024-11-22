@@ -34,7 +34,7 @@ const RobuxBox = () => {
       if (!fetchedUser) {
         setUserNotFound(true);
         setCurrentStep("input");
-        setUserOutput("An error occurred. Please try again later.");
+        setUserOutput("Something went wrong. Please try again later.");
       }
       setUser(fetchedUser);
       setUserNotFound(false);
