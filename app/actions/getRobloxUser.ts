@@ -23,7 +23,6 @@ const fetchRobloxUser = async (username: string) => {
       avatarUrl: data.avatarUrl || null,
     };
   } catch (error) {
-    // Enhanced error handling to catch network or unexpected errors
     console.error("Error while fetching Roblox user:", error);
     return {
       error:

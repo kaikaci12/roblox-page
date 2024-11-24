@@ -39,7 +39,7 @@ const NavBar = () => {
             onClick={handleMenuToggle}
             className="text-[#393b3d] text-2xl cursor-pointer sm:hidden"
           />
-          <Link href="https://www.roblox.com/home">
+          <Link href="/">
             <Image
               width={40}
               height={40}
@@ -61,6 +61,7 @@ const NavBar = () => {
               href: "https://www.roblox.com/upgrades/robux?ctx=navpopover",
               label: "Robux",
             },
+            { href: "/about", label: "About us" },
           ].map((item) => (
             <Link key={item.href} href={item.href}>
               <div className="font-semibold text-[#393b3d] px-4 py-2 border-b-2 border-transparent hover:border-black transition-all">
@@ -92,6 +93,7 @@ const NavBar = () => {
               href: "https://www.roblox.com/upgrades/robux?ctx=navpopover",
               label: "Robux",
             },
+            { href: "/about", label: "About" },
           ].map((item) => (
             <Link key={item.href} href={item.href}>
               <div
