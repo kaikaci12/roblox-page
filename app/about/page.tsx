@@ -21,6 +21,7 @@ function page() {
             alt="Our Team"
             width={400}
             height={400}
+            unoptimized
             className="w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full shadow-md object-cover mx-auto"
           />
         </div>
@@ -62,6 +63,7 @@ function page() {
               className="w-16 h-16 object-contain"
               alt="YouTube Logo"
               src={"/images/yt.png"}
+              unoptimized
             />
             <div className="flex flex-col">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold">
@@ -83,6 +85,7 @@ function page() {
               className="w-16 h-16 object-contain"
               alt="Roblox Logo"
               src={"/images/roblox-logo.png"}
+              unoptimized
             />
             <div className="flex flex-col ">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold">
