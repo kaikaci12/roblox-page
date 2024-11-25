@@ -61,7 +61,7 @@ const NavBar = () => {
               href: "https://www.roblox.com/upgrades/robux?ctx=navpopover",
               label: "Robux",
             },
-            { href: "/about", label: "About us" },
+            { href: "/about", label: "Q&A" },
           ].map((item) => (
             <Link key={item.href} href={item.href}>
               <div className="font-semibold text-[#393b3d] px-4 py-2 border-b-2 border-transparent hover:border-black transition-all">
@@ -93,7 +93,7 @@ const NavBar = () => {
               href: "https://www.roblox.com/upgrades/robux?ctx=navpopover",
               label: "Robux",
             },
-            { href: "/about", label: "About" },
+            { href: "/about", label: "Q&A" },
           ].map((item) => (
             <Link key={item.href} href={item.href}>
               <div

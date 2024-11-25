@@ -10,7 +10,8 @@ function page() {
           Q&A
         </h1>
         <p className="mt-2 text-sm sm:text-base md:text-lg text-gray-700">
-          Learn more about our journey and what we aim to achieve!
+          Find answers to commonly asked questions and get the information you
+          need quickly and easily.
         </p>
       </div>
 
@@ -27,11 +28,21 @@ function page() {
         </div>
 
         <div className="md:w-2/3 py-6 px-4 sm:py-8 sm:px-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-            You need to complete the offer to receive the Robux. It may
-            sometimes take up to 1 to 3 days to finalize and send the Robux to
-            the specified user.
-          </h2>
+          <ul className="list-disc pl-5 text-xl sm:2xl flex flex-col gap-5">
+            <li>You need to complete the offer to receive the Robux.</li>
+            <li>
+              It may sometimes take up to 1 to 3 days to finalize and send the
+              Robux to the specified user.
+            </li>
+            <li>
+              If the Robux hasn’t been sent to your account, please try again
+              later.
+            </li>
+            <li>
+              If you completed an offer and didn’t receive the Robux, simply try
+              a different offer until you do
+            </li>
+          </ul>
         </div>
       </div>
 
