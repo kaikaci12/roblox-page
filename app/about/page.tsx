@@ -7,7 +7,7 @@ function page() {
       {/* Header Section */}
       <div className="bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-md rounded-lg p-6 mb-10 text-center">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
-          About Us
+          Q&A
         </h1>
         <p className="mt-2 text-sm sm:text-base md:text-lg text-gray-700">
           Learn more about our journey and what we aim to achieve!
@@ -28,32 +28,13 @@ function page() {
 
         <div className="md:w-2/3 py-6 px-4 sm:py-8 sm:px-6">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-            Who We Are
+            You need to complete the offer to receive the Robux. It may
+            sometimes take up to 1 to 3 days to finalize and send the Robux to
+            the specified user.
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed mb-4">
-            We are passionate creators who aim to make an impact in the gaming
-            community. Our platform is built with the purpose of providing value
-            to our users through innovation, creativity, and dedication.
-          </p>
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed">
-            From humble beginnings to becoming a trusted name in the community,
-            our journey has been fueled by our love for gaming and the support
-            of our amazing users like you. Together, we are building something
-            extraordinary.
-          </p>
         </div>
       </div>
 
-      {/* Our Mission Section */}
-      <div className="bg-white shadow-lg rounded-lg p-6 mt-10 text-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-          Our Mission
-        </h2>
-        <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed">
-          To provide a seamless and enjoyable experience for all gaming
-          enthusiasts, empowering creativity and connections worldwide.
-        </p>
-      </div>
       <div className="shadow-xl rounded-lg p-8 mt-12 text-center bg-gradient-to-r ">
         <div className="flex flex-col items-center mb-8 space-y-6">
           <div className="flex items-center space-x-4 gap-2">
