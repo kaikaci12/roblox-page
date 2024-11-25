@@ -2,39 +2,42 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Loading from "../loading";
+import Loading from "../components/Loader";
 
 function Verify() {
   const [adsData, setAdsData] = useState([]);
   const [displayCount, setDisplayCount] = useState(8); // Start with 8 ads
   const [loading, setIsLoading] = useState(true);
-  const router = useRouter();
+  const [completedLeads, setCompletedLeads] = useState([]);
 
   useEffect(() => {
-    const fetchAds = async () => {
+    const fetchAdsAndLeads = async () => {
       try {
-        const response = await axios.get(
+        const adsResponse = await axios.get(
           "https://d3ept9mddcbuhi.cloudfront.net/public/offers/feed.php?user_id=623910&api_key=525aedb31fa76c26997f25d2b15e501f&s1=&s2="
         );
+        setAdsData(adsResponse.data);
 
-        setAdsData(response.data);
+        const leadsResponse = await axios.get("/api/getLeads");
+
+        setCompletedLeads(leadsResponse.data);
+
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching ads data:", error);
+        console.error("Error fetching ads or leads data:", error);
+        setIsLoading(false);
       }
     };
-    fetchAds();
+
+    fetchAdsAndLeads();
   }, []);
 
-  // Handler to load more ads
   const handleLoadMore = () => {
-    setDisplayCount((prevCount) => prevCount + 5); // Load 5 more ads
+    setDisplayCount((prevCount) => prevCount + 5);
   };
 
-  // Handler to show less ads
   const handleShowLess = () => {
-    setDisplayCount(8); // Reset to the initial display count
+    setDisplayCount(8);
   };
 
   return (
@@ -45,40 +48,59 @@ function Verify() {
           Complete one of the steps to get Robux!
         </span>
       </header>
-      {loading && <Loading />}
-      <div className=" grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full max-w-6xl">
-        {adsData.slice(0, displayCount).map((ad) => (
-          <div
-            key={ad.id}
-            className="flex flex-col items-center justify-between border border-gray-300 rounded-lg shadow-lg p-4 bg-white hover:shadow-xl transition-shadow duration-300"
-          >
-            <Image
-              width={80}
-              height={80}
-              src={ad.network_icon}
-              alt={ad.name}
-              className="w-20 h-20 object-cover"
-              unoptimized
-            />
-            <div className="flex flex-col items-center gap-2 mt-3">
-              <h3 className="text-lg font-semibold text-center">{ad.name}</h3>
-              <p className="text-gray-600 text-center">{ad.conversion}</p>
-            </div>
 
-            <button
-              className="mt-4 w-full py-2 rounded-full border-4 border-white bg-green-500 text-white font-medium hover:bg-green-600 transition-colors"
-              onClick={() => router.push(ad.url)}
+      {loading && <Loading />}
+
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full max-w-6xl">
+        {adsData.slice(0, displayCount).map((ad) => {
+          const isCompleted = completedLeads.some(
+            (lead) => lead.offer_id === ad.id
+          ); // Check if this ad is completed
+          return (
+            <div
+              key={ad.id}
+              className={`relative flex flex-col items-center justify-between border border-gray-300 rounded-lg shadow-lg p-4 bg-white hover:shadow-xl transition-shadow duration-300 ${
+                isCompleted ? "bg-gray-300" : ""
+              }`}
             >
-              Get Robux
-            </button>
-          </div>
-        ))}
+              <Image
+                width={80}
+                height={80}
+                src={ad.network_icon}
+                alt={ad.name}
+                className="w-20 h-20 object-cover"
+                unoptimized
+              />
+              <div className="flex flex-col items-center gap-2 mt-3">
+                <h3 className="text-lg font-semibold text-center">{ad.name}</h3>
+                <p className="text-gray-600 text-center">{ad.conversion}</p>
+              </div>
+
+              {isCompleted && (
+                <div className="absolute top-2 left-2 bg-green-500 text-white text-xs py-1 px-2 rounded-full shadow-md animate-pulse">
+                  Completed
+                </div>
+              )}
+
+              <button
+                className={`mt-4 w-full py-2 rounded-full border-4 border-white bg-green-500 text-white font-medium hover:bg-green-600 transition-colors ${
+                  isCompleted ? "opacity-50" : ""
+                }`}
+                onClick={() => window.open(ad.url, "_blank")}
+                disabled={isCompleted} // Disable the button if the ad is completed
+              >
+                Get Robux
+              </button>
+            </div>
+          );
+        })}
       </div>
 
-      <div className=" mt-8 flex gap-4">
+      {/* Load more or show less buttons */}
+      <div className="mt-8 flex gap-4">
         {displayCount < adsData.length && (
           <button
-            className="px-4 py-2 rounded-md border-2 border-black  bg-cyan-400 text-black font-semibold hover:bg-cyan-500 transition-colors"
+            className="px-4 py-2 rounded-md border-2 border-black bg-cyan-400 text-black font-semibold hover:bg-cyan-500 transition-colors"
             onClick={handleLoadMore}
           >
             More offers
@@ -86,7 +108,7 @@ function Verify() {
         )}
         {displayCount > 8 && (
           <button
-            className="px-4 py-2 rounded-md border-2 border-black bg-cyan-400 text-black font-semibold hover:bg-cyan-500  transition-colors"
+            className="px-4 py-2 rounded-md border-2 border-black bg-cyan-400 text-black font-semibold hover:bg-cyan-500 transition-colors"
             onClick={handleShowLess}
           >
             Less offers

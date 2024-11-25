@@ -5,7 +5,7 @@ export type User = {
   displayName: string;
   avatarUrl: string | null;
   username: string;
-  profilePicture: string | null;
+  profilePictureUrl: string | null;
 };
 
 interface ConfirmationProps {
@@ -27,7 +27,7 @@ const Confirmation = ({ user, onConfirm, onCancel }: ConfirmationProps) => {
             <div className="relative w-24 h-24 sm:w-36 sm:h-36">
               <Image
                 src={
-                  user.avatarUrl || "/images/noob.png" || user.profilePicture
+                  user.avatarUrl || "/images/noob.png" || user.profilePictureUrl
                 }
                 alt={`${user.displayName}'s Avatar ` || "avatar"}
                 className="rounded-full shadow-md hover:shadow-lg transition-shadow duration-300"

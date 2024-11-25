@@ -8,6 +8,7 @@ import additionalPackages from "../../additionalPackages.json";
 import fetchRobloxUser from "../actions/getRobloxUser";
 import Confirmation from "./Confirmation";
 
+import Loading from "./Loader";
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
   const [userNotFound, setUserNotFound] = useState(false);
@@ -47,8 +48,8 @@ const RobuxBox = () => {
     }
   };
 
-  const handleRobuxClick = (robux: number, username: string) => {
-    setUserOutput(`Sending ${robux} Robux to ${username}...`);
+  const handleRobuxClick = (robux: number) => {
+    setUserOutput(`Sending ${robux} Robux to `);
     setCurrentStep("loading");
     setTimeout(() => {
       setCurrentStep("final");
@@ -109,16 +110,7 @@ const RobuxBox = () => {
       )}
 
       {currentStep === "loading" && (
-        <div className="box2">
-          <div className="folding">
-            <div className="sk-cube sk-cube1"></div>
-            <div className="sk-cube sk-cube2"></div>
-            <div className="sk-cube sk-cube3"></div>
-            <div className="sk-cube sk-cube4"></div>
-            <div className="square"></div>
-          </div>
-          <p className="useroutput mt-1">{userOutput}</p>
-        </div>
+        <Loading user={user} userOutput={userOutput} verify={false} />
       )}
 
       {currentStep === "confirmation" && (

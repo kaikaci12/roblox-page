@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
       "i.gyazo.com",
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination:
+          "https://d3gi4w10ruedfh.cloudfront.net/public/external/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

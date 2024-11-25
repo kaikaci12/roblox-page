@@ -17,7 +17,6 @@ const fetchRobloxUser = async (username: string) => {
       return { error: data?.error || "Could not find user" };
     }
 
-    // If no error, return the user data
     return {
       ...data,
       avatarUrl: data.avatarUrl || null,

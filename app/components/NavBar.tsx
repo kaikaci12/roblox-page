@@ -32,12 +32,12 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-[#dee1e3] fixed top-0 left-0 right-0 p-1 sm:px-4 z-50 shadow-md">
+    <nav className="bg-[#dee1e3] fixed top-0 left-0 right-0 p-1 lg:px-4 z-50 shadow-md">
       <div className="flex items-center justify-between ">
         <div className="flex items-center space-x-4">
           <FaBars
             onClick={handleMenuToggle}
-            className="text-[#393b3d] text-2xl cursor-pointer sm:hidden"
+            className="text-[#393b3d] text-2xl cursor-pointer lg:hidden"
           />
           <Link href="/">
             <Image
@@ -52,7 +52,7 @@ const NavBar = () => {
         </div>
 
         {/* Navigation Links for Large Screens */}
-        <div className="hidden sm:flex space-x-6">
+        <div className="hidden lg:flex space-x-6">
           {[
             { href: "https://www.roblox.com/charts", label: "Charts" },
             { href: "https://www.roblox.com/catalog", label: "Marketplace" },
