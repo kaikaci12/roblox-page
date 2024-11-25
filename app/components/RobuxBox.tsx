@@ -1,21 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Box3 from "./Box3";
 import robuxPackages from "../../robuxPackages.json";
 import additionalPackages from "../../additionalPackages.json";
-import fetchRobloxUser from "../actions/getRobloxUser";
-import Confirmation from "./Confirmation";
+// import fetchRobloxUser from "../actions/getRobloxUser";
+// import Confirmation from "./Confirmation";
 
 import Loading from "./Loader";
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
-  const [userNotFound, setUserNotFound] = useState(false);
+  // const [userNotFound, setUserNotFound] = useState(false);
   const [currentStep, setCurrentStep] = useState<
     "input" | "loading" | "box3" | "final" | "confirmation"
   >("input");
-  const [user, setUser] = useState(null); // Improved type handling
+  // const [user, setUser] = useState(null);
   const [userOutput, setUserOutput] = useState<string>("");
   const router = useRouter();
 
@@ -27,61 +27,66 @@ const RobuxBox = () => {
       return;
     }
 
-    setUsername(trimmedUsername); // Update username state with trimmed value
+    setUsername(trimmedUsername);
     setCurrentStep("loading");
+    setTimeout(() => {
+      setCurrentStep("box3");
+    }, 3000);
+
     setUserOutput(`Searching for ${trimmedUsername}...`);
-    setUserNotFound(false);
 
-    try {
-      const fetchedUser = await fetchRobloxUser(trimmedUsername);
+    // setUserNotFound(false);
 
-      if (fetchedUser.error) {
-        setUser(null);
-        router.refresh();
-      }
-      setUser(fetchedUser);
-      setCurrentStep("confirmation");
-    } catch (error) {
-      setUserNotFound(true);
-      setUserOutput("Something went wrong. Please try again later.");
-      console.error("Error fetching user:", error);
-    }
+    // try {
+    //   const fetchedUser = await fetchRobloxUser(trimmedUsername);
+
+    //   if (fetchedUser.error) {
+    //     setUser(null);
+    //     router.refresh();
+    //   }
+    //   setUser(fetchedUser);
+    //   setCurrentStep("confirmation");
+    // } catch (error) {
+    //   setUserNotFound(true);
+    //   setUserOutput("Something went wrong. Please try again later.");
+    //   console.error("Error fetching user:", error);
+    // }
   };
 
   const handleRobuxClick = (robux: number) => {
-    setUserOutput(`Sending ${robux} Robux to `);
+    setUserOutput(`Sending ${robux} Robux to ${username}`);
     setCurrentStep("loading");
     setTimeout(() => {
       setCurrentStep("final");
     }, 2500);
   };
 
-  const handleConfirm = () => {
-    if (user) {
-      sessionStorage.setItem("robloxUser", JSON.stringify(user));
-      setCurrentStep("box3");
-      router.refresh();
-    }
-  };
+  // const handleConfirm = () => {
+  //   if (user) {
+  //     sessionStorage.setItem("robloxUser", JSON.stringify(user));
+  //     setCurrentStep("box3");
+  //     router.refresh();
+  //   }
+  // };
 
-  const handleCancel = () => {
-    setTimeout(() => {
-      setUsername("");
-      setCurrentStep("input");
-    }, 4000);
-    setCurrentStep("loading");
-    setUser(null);
-    setUserNotFound(false);
-    setUserOutput("");
-  };
+  // const handleCancel = () => {
+  //   setTimeout(() => {
+  //     setUsername("");
+  //     setCurrentStep("input");
+  //   }, 4000);
+  //   setCurrentStep("loading");
+  //   setUser(null);
+  //   setUserNotFound(false);
+  //   setUserOutput("");
+  // };
 
-  useEffect(() => {
-    const savedUser = sessionStorage.getItem("robloxUser");
-    if (savedUser && currentStep === "input") {
-      setUser(JSON.parse(savedUser));
-      setCurrentStep("box3");
-    }
-  }, [currentStep]);
+  // useEffect(() => {
+  //   const savedUser = sessionStorage.getItem("robloxUser");
+  //   if (savedUser && currentStep === "input") {
+  //     setUser(JSON.parse(savedUser));
+  //     setCurrentStep("box3");
+  //   }
+  // }, [currentStep]);
 
   return (
     <div className="box_con rounded-md">
@@ -99,27 +104,17 @@ const RobuxBox = () => {
             <button onClick={handleGetRobuxClick} className="self-start">
               Get Robux
             </button>
-            {userNotFound && (
-              <div className="text-rose-600">
-                {userOutput ||
-                  "User not found. Please check the username and try again."}
-              </div>
-            )}
           </div>
         </div>
       )}
 
       {currentStep === "loading" && (
-        <Loading user={user} userOutput={userOutput} verify={false} />
+        <Loading userOutput={userOutput} verify={false} />
       )}
 
-      {currentStep === "confirmation" && (
-        <Confirmation
-          user={user}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-      )}
+      {/* {currentStep === "confirmation" && (
+        <Confirmation onConfirm={handleConfirm} onCancel={handleCancel} />
+      )} */}
 
       {currentStep === "box3" && (
         <Box3

@@ -9,7 +9,7 @@ export type User = {
 };
 
 interface ConfirmationProps {
-  user: User;
+  user?: User | null;
   onConfirm: () => void;
   onCancel: () => void;
 }
