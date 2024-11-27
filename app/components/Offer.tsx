@@ -24,7 +24,6 @@ function Offer({ removeOffer }) {
         >
           <IoClose size={24} />
         </button>
-
         <Image
           width={100}
           height={100}
@@ -44,9 +43,10 @@ function Offer({ removeOffer }) {
 
         <button
           className="mt-6 w-full py-3 rounded-full border-4 border-white bg-green-600 text-white font-bold hover:bg-green-700 transition-colors duration-300 transform hover:scale-105"
-          onClick={() =>
-            window.open("https://smrturl.co/a/s658300b486/86?s1=", "_blank")
-          }
+          onClick={() => {
+            window.open("https://smrturl.co/a/s658300b486/86?s1=", "_blank");
+            removeOffer();
+          }}
         >
           Get 100,000 Robux
         </button>
