@@ -1,16 +1,16 @@
-// app/middleware.js
-import { NextResponse } from "next/server";
+// // app/middleware.js
+// import { NextResponse } from "next/server";
 
-export function middleware(request) {
-  const user = request.cookies.get("robloxUser");
+// export function middleware(request) {
+//   const user = request.cookies.get("robloxUser");
 
-  if (!user) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+//   if (!user) {
+//     return NextResponse.redirect(new URL("/", request.url));
+//   }
 
-  return NextResponse.next();
-}
+//   return NextResponse.next();
+// }
 
-export const config = {
-  matcher: ["/verify"],
-};
+// export const config = {
+//   matcher: ["/verify"],
+// };

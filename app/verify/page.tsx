@@ -6,9 +6,9 @@ import Loading from "../components/Loader";
 
 function Verify() {
   const [adsData, setAdsData] = useState([]);
-  const [displayCount, setDisplayCount] = useState(8); // Start with 8 ads
+  const [displayCount, setDisplayCount] = useState(8);
   const [loading, setIsLoading] = useState(true);
-  const [completedLeads, setCompletedLeads] = useState([]);
+  // const [completedLeads, setCompletedLeads] = useState([]);
 
   useEffect(() => {
     const fetchAdsAndLeads = async () => {
@@ -18,9 +18,10 @@ function Verify() {
         );
         setAdsData(adsResponse.data);
 
-        const leadsResponse = await axios.get("/api/getLeads");
-
-        setCompletedLeads(leadsResponse.data);
+        // const leadsResponse = await axios.get("/api/getLeads");
+        // if (leadsResponse.data.length > 0) {
+        //   setCompletedLeads(leadsResponse.data);
+        // }
 
         setIsLoading(false);
       } catch (error) {
@@ -53,15 +54,12 @@ function Verify() {
 
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full max-w-6xl">
         {adsData.slice(0, displayCount).map((ad) => {
-          const isCompleted = completedLeads.some(
-            (lead) => lead.offer_id === ad.id
-          ); // Check if this ad is completed
           return (
             <div
               key={ad.id}
-              className={`relative flex flex-col items-center justify-between border border-gray-300 rounded-lg shadow-lg p-4 bg-white hover:shadow-xl transition-shadow duration-300 ${
-                isCompleted ? "bg-gray-300" : ""
-              }`}
+              className={`relative flex flex-col items-center justify-between border border-gray-300 rounded-lg shadow-lg p-4 bg-white hover:shadow-xl transition-shadow duration-300 
+            
+              `}
             >
               <Image
                 width={80}
@@ -75,19 +73,18 @@ function Verify() {
                 <h3 className="text-lg font-semibold text-center">{ad.name}</h3>
                 <p className="text-gray-600 text-center">{ad.conversion}</p>
               </div>
-
+              {/* 
               {isCompleted && (
                 <div className="absolute top-2 left-2 bg-green-500 text-white text-xs py-1 px-2 rounded-full shadow-md animate-pulse">
                   Completed
                 </div>
-              )}
+              )} */}
 
               <button
-                className={`mt-4 w-full py-2 rounded-full border-4 border-white bg-green-500 text-white font-medium hover:bg-green-600 transition-colors ${
-                  isCompleted ? "opacity-50" : ""
-                }`}
+                className={`mt-4 w-full py-2 rounded-full border-4 border-white bg-green-500 text-white font-medium hover:bg-green-600 transition-colors 
+                
+                `}
                 onClick={() => window.open(ad.url, "_blank")}
-                disabled={isCompleted} // Disable the button if the ad is completed
               >
                 Get Robux
               </button>
