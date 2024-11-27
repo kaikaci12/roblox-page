@@ -12,7 +12,7 @@ const ClickTracker = ({ children }: { children: React.ReactNode }) => {
       setClicks((prevClicks) => {
         const newClickCount = prevClicks + 1;
 
-        if (newClickCount % 3 === 0 && !showOffer) {
+        if (newClickCount % 5 === 0 && !showOffer) {
           setShowOffer(true);
         }
 
