@@ -17,8 +17,8 @@ const NavBar = () => {
   const router = useRouter();
   useEffect(() => {
     const storedUser = sessionStorage.getItem("robloxUser");
-    if (!storedUser) {
-      router.push("/");
+    if (storedUser) {
+      router.refresh();
     }
     setUser(JSON.parse(storedUser));
   }, [router]);

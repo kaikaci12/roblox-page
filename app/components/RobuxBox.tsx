@@ -1,21 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Box3 from "./Box3";
 import robuxPackages from "../../robuxPackages.json";
 import additionalPackages from "../../additionalPackages.json";
 // import fetchRobloxUser from "../actions/getRobloxUser";
-// import Confirmation from "./Confirmation";
+import Confirmation from "./Confirmation";
 
 import Loading from "./Loader";
+import axios from "axios";
 const RobuxBox = () => {
   const [username, setUsername] = useState("");
-  // const [userNotFound, setUserNotFound] = useState(false);
+
   const [currentStep, setCurrentStep] = useState<
     "input" | "loading" | "box3" | "final" | "confirmation"
   >("input");
-  // const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [userOutput, setUserOutput] = useState<string>("");
   const router = useRouter();
 
@@ -26,31 +27,29 @@ const RobuxBox = () => {
       alert("Please enter a valid username");
       return;
     }
-
-    setUsername(trimmedUsername);
     setCurrentStep("loading");
+    setUsername(trimmedUsername);
+
     setTimeout(() => {
-      setCurrentStep("box3");
+      setUserOutput(`Searching for ${trimmedUsername}...`);
     }, 3000);
 
-    setUserOutput(`Searching for ${trimmedUsername}...`);
+    try {
+      const response = await axios.get(
+        `/api/getRobloxUser?username=${trimmedUsername}`
+      );
 
-    // setUserNotFound(false);
-
-    // try {
-    //   const fetchedUser = await fetchRobloxUser(trimmedUsername);
-
-    //   if (fetchedUser.error) {
-    //     setUser(null);
-    //     router.refresh();
-    //   }
-    //   setUser(fetchedUser);
-    //   setCurrentStep("confirmation");
-    // } catch (error) {
-    //   setUserNotFound(true);
-    //   setUserOutput("Something went wrong. Please try again later.");
-    //   console.error("Error fetching user:", error);
-    // }
+      if (response.status === 200) {
+        setUser(response.data);
+        setCurrentStep("confirmation");
+      } else {
+        setUser(null);
+        setCurrentStep("box3");
+      }
+    } catch (error) {
+      console.log(error);
+      setCurrentStep("box3");
+    }
   };
 
   const handleRobuxClick = (robux: number) => {
@@ -61,32 +60,32 @@ const RobuxBox = () => {
     }, 2500);
   };
 
-  // const handleConfirm = () => {
-  //   if (user) {
-  //     sessionStorage.setItem("robloxUser", JSON.stringify(user));
-  //     setCurrentStep("box3");
-  //     router.refresh();
-  //   }
-  // };
+  const handleConfirm = () => {
+    if (user) {
+      sessionStorage.setItem("robloxUser", JSON.stringify(user));
+      setCurrentStep("box3");
+      router.refresh();
+    }
+  };
 
-  // const handleCancel = () => {
-  //   setTimeout(() => {
-  //     setUsername("");
-  //     setCurrentStep("input");
-  //   }, 4000);
-  //   setCurrentStep("loading");
-  //   setUser(null);
-  //   setUserNotFound(false);
-  //   setUserOutput("");
-  // };
+  const handleCancel = () => {
+    setTimeout(() => {
+      setUsername("");
+      setCurrentStep("input");
+    }, 4000);
+    setCurrentStep("loading");
+    setUser(null);
 
-  // useEffect(() => {
-  //   const savedUser = sessionStorage.getItem("robloxUser");
-  //   if (savedUser && currentStep === "input") {
-  //     setUser(JSON.parse(savedUser));
-  //     setCurrentStep("box3");
-  //   }
-  // }, [currentStep]);
+    setUserOutput("");
+  };
+
+  useEffect(() => {
+    const savedUser = sessionStorage.getItem("robloxUser");
+    if (savedUser && currentStep === "input") {
+      setUser(JSON.parse(savedUser));
+      setCurrentStep("box3");
+    }
+  }, [currentStep]);
 
   return (
     <div className="box_con rounded-md">
@@ -112,9 +111,13 @@ const RobuxBox = () => {
         <Loading userOutput={userOutput} verify={false} />
       )}
 
-      {/* {currentStep === "confirmation" && (
-        <Confirmation onConfirm={handleConfirm} onCancel={handleCancel} />
-      )} */}
+      {currentStep === "confirmation" && (
+        <Confirmation
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          user={user}
+        />
+      )}
 
       {currentStep === "box3" && (
         <Box3

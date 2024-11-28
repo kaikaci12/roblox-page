@@ -26,9 +26,7 @@ const Confirmation = ({ user, onConfirm, onCancel }: ConfirmationProps) => {
           <div className="flex flex-col items-center">
             <div className="relative w-24 h-24 sm:w-36 sm:h-36">
               <Image
-                src={
-                  user.avatarUrl || "/images/noob.png" || user.profilePictureUrl
-                }
+                src={user.profilePictureUrl || "/images/noob.png"}
                 alt={`${user.displayName}'s Avatar ` || "avatar"}
                 className="rounded-full shadow-md hover:shadow-lg transition-shadow duration-300"
                 width={144}
