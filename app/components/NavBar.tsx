@@ -51,7 +51,6 @@ const NavBar = () => {
           </Link>
         </div>
 
-        {/* Navigation Links for Large Screens */}
         <div className="hidden lg:flex space-x-6">
           {[
             { href: "https://www.roblox.com/charts", label: "Charts" },
@@ -118,6 +117,7 @@ const NavBar = () => {
               className="rounded-full w-10 h-10"
               width={96}
               height={96}
+              unoptimized
             />
 
             <div className="text-center ">

@@ -20,10 +20,10 @@ function Loading({ user, userOutput, verify }: LoadingProps) {
           } rotate-[87deg]`}
         ></div>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 items-center">
-        <h2 className="useroutput  text-gray-700 text-lg">{userOutput}</h2>
-        {user && (
+      <div className="flex flex-col sm:flex-row gap-4 items-center  text-gray-700 text-lg">
+        {user ? (
           <div className="flex items-center gap-5">
+            {userOutput}
             <div className="relative flex items-center gap-3 px-3 py-2 bg-gray-100 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <Image
                 src={
@@ -45,6 +45,8 @@ function Loading({ user, userOutput, verify }: LoadingProps) {
               </div>
             </div>
           </div>
+        ) : (
+          <h2 className="useroutput  text-gray-700 text-lg">{userOutput}</h2>
         )}
       </div>
     </div>

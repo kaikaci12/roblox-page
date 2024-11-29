@@ -27,29 +27,30 @@ const RobuxBox = () => {
       alert("Please enter a valid username");
       return;
     }
-    setCurrentStep("loading");
+
     setUsername(trimmedUsername);
+    setUserOutput(`Searching for ${trimmedUsername}...`);
 
-    setTimeout(() => {
-      setUserOutput(`Searching for ${trimmedUsername}...`);
-    }, 3000);
+    setCurrentStep("loading");
 
-    try {
-      const response = await axios.get(
-        `/api/getRobloxUser?username=${trimmedUsername}`
-      );
+    setTimeout(async () => {
+      try {
+        const response = await axios.get(
+          `/api/getRobloxUser?username=${trimmedUsername}`
+        );
 
-      if (response.status === 200) {
-        setUser(response.data);
-        setCurrentStep("confirmation");
-      } else {
-        setUser(null);
+        if (response.status === 200) {
+          setUser(response.data);
+          setCurrentStep("confirmation");
+        } else {
+          setUser(null);
+          setCurrentStep("box3");
+        }
+      } catch (error) {
+        console.log(error);
         setCurrentStep("box3");
       }
-    } catch (error) {
-      console.log(error);
-      setCurrentStep("box3");
-    }
+    }, 3000);
   };
 
   const handleRobuxClick = (robux: number) => {
@@ -108,7 +109,7 @@ const RobuxBox = () => {
       )}
 
       {currentStep === "loading" && (
-        <Loading userOutput={userOutput} verify={false} />
+        <Loading userOutput={userOutput} verify={false} user={user} />
       )}
 
       {currentStep === "confirmation" && (
