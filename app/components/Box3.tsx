@@ -42,7 +42,7 @@ const Box3: React.FC<Box3Props> = ({
   return (
     <main className="space-y-10 px-4 sm:px-8 md:px-16">
       <div className="rounded-lg bg-gradient-to-r from-yellow-300 to-yellow-500 shadow-md p-5 text-gray-800 text-center">
-        <h2 className="font-semibold text-xl sm:text-2xl md:text-3xl flex items-center justify-center gap-3">
+        <h2 className="font-semibold text-lg sm:text-xl md:text-2xl flex items-center justify-center gap-3">
           Bonus Virtual Item Included with a Robux Purchase
           <FiChevronDown
             width={25}
@@ -68,7 +68,7 @@ const Box3: React.FC<Box3Props> = ({
 
             <div className="user-details flex flex-col items-center justify-center">
               <h4 className="text-2xl font-bold text-gray-800 tracking-wide">
-                {user.displayName || "Displayname not available"}
+                {user.displayName || ""}
               </h4>
               <p className="text-sm text-gray-600">
                 @{user.username || "roblox-user"}
