@@ -39,6 +39,7 @@ const Box3: React.FC<Box3Props> = ({
           setCurrency(getCurrencySymbol(locationData.currency));
         } else {
           console.log("Currency data not found in response");
+          setCurrency("$");
         }
       } catch (error) {
         setCurrency("$");
