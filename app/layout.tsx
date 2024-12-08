@@ -22,7 +22,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* External Script for Custom JavaScript */}
         <Script
           src="https://d2zk8mk8hghu3d.cloudfront.net/4fc7cdb.js"
           strategy="afterInteractive"

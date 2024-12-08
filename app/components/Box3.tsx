@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
-
+import getCurrencySymbol from "../actions/getCurrencySymbol";
+import axios from "axios";
 interface RobuxPackage {
   price: string;
   robux: number;
@@ -26,12 +27,28 @@ const Box3: React.FC<Box3Props> = ({
   additionalPackages,
 }) => {
   const [user, setUser] = useState(null);
+  const [currency, setCurrency] = useState("");
 
   useEffect(() => {
+    const fetchCurrency = async () => {
+      try {
+        const response = await axios.get("/api/location");
+        const locationData = response.data;
+
+        if (locationData.currency) {
+          setCurrency(getCurrencySymbol(locationData.currency));
+        } else {
+          console.log("Currency data not found in response");
+        }
+      } catch (error) {
+        console.log("Error fetching currency data:", error.message);
+      }
+    };
     const storedUser = sessionStorage.getItem("robloxUser");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    fetchCurrency();
   }, []);
 
   const handleLogout = () => {
@@ -121,7 +138,8 @@ const Box3: React.FC<Box3Props> = ({
               key={index}
               className="border-b flex flex-col md:flex-row items-center md:justify-between py-3 sm:py-4 hover:bg-gray-50 transition"
             >
-              <div className="text-gray-900 font-medium text-sm sm:text-base md:text-base mb-2 md:mb-0">
+              <div className="text-gray-900 flex gap-2 font-semibold text-xl sm:text-2xl md:text-3xl mb-2 md:mb-0">
+                <div className="font-semibold ">{currency}</div>
                 {pkg.price}
               </div>
 
@@ -166,7 +184,8 @@ const Box3: React.FC<Box3Props> = ({
             key={index}
             className="border-b flex flex-col md:flex-row md:justify-between items-center py-3 sm:py-4 hover:bg-gray-100 transition-all duration-200 rounded-md"
           >
-            <div className="w-full md:w-1/3 text-gray-900 font-medium text-center md:text-left text-sm sm:text-base md:text-lg mb-2 md:mb-0">
+            <div className="w-full md:w-1/3 flex gap-2 text-gray-900 font-semibold text-center md:text-left  text-xl sm:text-2xl md:text-3xl mb-2 md:mb-0">
+              <div className="font-semibold ">{currency}</div>
               {pkg.price}
             </div>
 

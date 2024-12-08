@@ -18,6 +18,7 @@ const RobuxBox = () => {
   >("input");
   const [user, setUser] = useState(null);
   const [userOutput, setUserOutput] = useState<string>("");
+
   const router = useRouter();
 
   const handleGetRobuxClick = async () => {

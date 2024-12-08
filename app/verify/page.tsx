@@ -8,6 +8,7 @@ function Verify() {
   const [adsData, setAdsData] = useState([]);
   const [displayCount, setDisplayCount] = useState(8);
   const [loading, setIsLoading] = useState(true);
+
   // const [completedLeads, setCompletedLeads] = useState([]);
 
   useEffect(() => {

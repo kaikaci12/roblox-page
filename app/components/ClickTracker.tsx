@@ -2,22 +2,32 @@
 
 import { useState, useEffect } from "react";
 import Offer from "./Offer";
+import axios from "axios";
 
 const ClickTracker = ({ children }: { children: React.ReactNode }) => {
   const [showOffer, setShowOffer] = useState(false);
   const [clicks, setClicks] = useState(0);
 
   useEffect(() => {
-    const handleClick = () => {
-      setClicks((prevClicks) => {
-        const newClickCount = prevClicks + 1;
+    const handleClick = async () => {
+      try {
+        const response = await axios.get("/api/location");
+        const data = await response.data;
 
-        if (newClickCount % 5 === 0 && !showOffer) {
-          setShowOffer(true);
-        }
+        const isFromUS = data?.location?.country_name === "United States";
 
-        return newClickCount;
-      });
+        setClicks((prevClicks) => {
+          const newClickCount = prevClicks + 1;
+
+          if (newClickCount % 5 === 0 && !showOffer && isFromUS) {
+            setShowOffer(true);
+          }
+
+          return newClickCount;
+        });
+      } catch (error) {
+        console.log("Error fetching location data:", error);
+      }
     };
 
     window.addEventListener("click", handleClick);
