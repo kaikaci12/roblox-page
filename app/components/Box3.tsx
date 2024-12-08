@@ -41,6 +41,7 @@ const Box3: React.FC<Box3Props> = ({
           console.log("Currency data not found in response");
         }
       } catch (error) {
+        setCurrency("$");
         console.log("Error fetching currency data:", error.message);
       }
     };
